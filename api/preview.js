@@ -1,8 +1,6 @@
 
 //2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c
 
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
     const url = req.query.url;
 
@@ -10,11 +8,9 @@ export default async function handler(req, res) {
         return res.status(200).json({ message: "Ready to work, send me a URL" });
     }
 
-    // Тестовый вызов BrowserQL, без обращения к Lamoda
     const BQL_KEY = "2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c";
     const BQL_API = "https://api.browserql.com/graphql";
 
-    // Простейший GraphQL запрос, просто проверяет соединение
     const testQuery = `
     mutation TestConnection {
       goto(url: "https://example.com", waitUntil: firstMeaningfulPaint) {
