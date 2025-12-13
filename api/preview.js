@@ -1,17 +1,51 @@
 
 //2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c
 
-export default function handler(req, res) {
+import fetch from "node-fetch";
+
+export default async function handler(req, res) {
     const url = req.query.url;
 
     if (!url) {
-        // Нет url — просто сообщение
         return res.status(200).json({ message: "Ready to work, send me a URL" });
     }
 
-    // Если url есть — просто возвращаем его обратно (без BrowserQL)
-    return res.status(200).json({ message: "Got your URL!", url });
+    // Тестовый вызов BrowserQL, без обращения к Lamoda
+    const BQL_KEY = "2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c";
+    const BQL_API = "https://api.browserql.com/graphql";
+
+    // Простейший GraphQL запрос, просто проверяет соединение
+    const testQuery = `
+    mutation TestConnection {
+      goto(url: "https://example.com", waitUntil: firstMeaningfulPaint) {
+        status
+        time
+      }
+    }
+  `;
+
+    try {
+        const response = await fetch(BQL_API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${BQL_KEY}`,
+            },
+            body: JSON.stringify({ query: testQuery }),
+        });
+
+        const data = await response.json();
+        return res.status(200).json({
+            message: "BrowserQL connection OK",
+            bqlResponse: data,
+            receivedUrl: url
+        });
+    } catch (e) {
+        return res.status(500).json({ error: e.message });
+    }
 }
+
+
 
 /* import fetch from "node-fetch";
 
