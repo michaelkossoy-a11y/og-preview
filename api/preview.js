@@ -1,7 +1,19 @@
 
 //2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c
 
-import fetch from "node-fetch";
+export default function handler(req, res) {
+    const url = req.query.url;
+
+    if (!url) {
+        // Нет url — просто сообщение
+        return res.status(200).json({ message: "Ready to work, send me a URL" });
+    }
+
+    // Если url есть — просто возвращаем его обратно (без BrowserQL)
+    return res.status(200).json({ message: "Got your URL!", url });
+}
+
+/* import fetch from "node-fetch";
 
 export default async function handler(req, res) {
     const url = req.query.url;
@@ -43,4 +55,4 @@ export default async function handler(req, res) {
     } catch (e) {
         return res.status(500).json({ error: e.message });
     }
-}
+} */
