@@ -1,19 +1,20 @@
 
+//2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c
+
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
     const url = req.query.url;
 
     if (!url) {
-        // Нет url — просто приветственное сообщение
+        // Нет url — просто сообщение, без вызова BrowserQL
         return res.status(200).json({ message: "Ready to work, send me a URL" });
     }
 
-    // Ваш BrowserQL ключ
-    const BQL_KEY = "2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c";
+    // Если url есть — вызываем BrowserQL
+    const BQL_KEY = "ВАШ_BROWSERQL_API_KEY";
     const BQL_API = "https://api.browserql.com/graphql";
 
-    // GraphQL запрос к BrowserQL
     const query = `
     mutation ScrapePage {
       goto(url: "${url}", waitUntil: firstMeaningfulPaint) {
@@ -38,9 +39,8 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        res.status(200).json(data);
+        return res.status(200).json(data);
     } catch (e) {
-        res.status(500).json({ error: e.message });
+        return res.status(500).json({ error: e.message });
     }
 }
-
