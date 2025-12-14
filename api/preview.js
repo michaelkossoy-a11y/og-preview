@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
 
     const BQL_KEY = "2TbE2q3dkWKQqGTf066f85752a82e1a091c73caa67107a45c";
-    const BQL_API = "https://api.browserql.com/graphql";
+    const BQL_API = `https://production-sfo.browserless.io/chromium/bql?token=${BQL_KEY}`;
 
     const testQuery = `
     mutation TestConnection {
@@ -23,10 +23,7 @@ export default async function handler(req, res) {
     try {
         const response = await fetch(BQL_API, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${BQL_KEY}`,
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ query: testQuery }),
         });
 
