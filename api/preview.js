@@ -17,27 +17,14 @@ export default async function handler(req, res) {
 
     // GraphQL-запрос к BrowserQL
     const query = `
-    mutation ScrapePage {
-        pageLoad: goto(url: "ВАШ_URL", waitUntil: firstMeaningfulPaint) {
-            status
-            time
-        }
-
-        ogTitle: text(selector: "meta[property='og:title']") {
-            text
-        }
-
-        ogDescription: text(selector: "meta[property='og:description']") {
-            text
-        }
-
-        ogImage: text(selector: "meta[property='og:image']") {
-            text
-        }
-
-        ogUrl: text(selector: "meta[property='og:url']") {
-            text
-        }
+    mutation DebugHTML {
+      goto(url: "${url}", waitUntil: networkIdle) {
+        status
+        time
+      }
+      html {
+        html
+      }
     }
   `;
 
