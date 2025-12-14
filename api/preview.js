@@ -18,14 +18,26 @@ export default async function handler(req, res) {
     // GraphQL-запрос к BrowserQL
     const query = `
     mutation ScrapePage {
-      goto(url: "${url}", waitUntil: firstMeaningfulPaint) {
+      pageLoad: goto(url: "${url}", waitUntil: firstMeaningfulPaint) {
         status
         time
       }
-      ogTitle: attribute(selector: "meta[property='og:title']", name: "content")
-      ogDescription: attribute(selector: "meta[property='og:description']", name: "content")
-      ogImage: attribute(selector: "meta[property='og:image']", name: "content")
-      ogUrl: attribute(selector: "meta[property='og:url']", name: "content")
+
+      ogTitle: text(selector: "meta[property='og:title']", attr: "content") {
+        text
+      }
+
+      ogDescription: text(selector: "meta[property='og:description']", attr: "content") {
+        text
+      }
+
+      ogImage: text(selector: "meta[property='og:image']", attr: "content") {
+        text
+      }
+
+      ogUrl: text(selector: "meta[property='og:url']", attr: "content") {
+        text
+      }
     }
   `;
 
